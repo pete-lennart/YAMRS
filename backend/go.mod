@@ -1,4 +1,4 @@
-module github.com/virtusmaior/YAMRS
+module github.com/virtusmaior/YAMRS/backend
 
 go 1.12
 

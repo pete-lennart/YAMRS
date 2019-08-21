@@ -5,7 +5,7 @@ import (
 	"time"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"github.com/virtusmaior/YAMRS/helper"
+	"github.com/virtusmaior/YAMRS/backend/config"
 )
 
 type DBConfig struct {
@@ -14,16 +14,10 @@ type DBConfig struct {
 }
 
 func InitDBCollection() (*DBConnection, error) {
-	var dbc DBConfig
-	err := helper.LoadConfigIntoStruct("../../config.json", &dbc)
-	if err != nil {
-		return nil, err
-	}
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(
-		"mongodb+srv://" + dbc.User + ":" + dbc.Password + "@cluster0-9j6na.mongodb.net/test?retryWrites=true&w=majority",
+		"mongodb+srv://" + config.DBConfig.User + ":" + config.DBConfig.Password + "@cluster0-9j6na.mongodb.net/test?retryWrites=true&w=majority",
 	))
 	if err != nil {
 		return nil, err
