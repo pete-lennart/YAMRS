@@ -7,7 +7,7 @@ import {MovieInfo} from './components/MovieInfo';
 import {TextButton} from './buttonsicons/helper';
 import {AdminSection} from './components/AdminSection';
 
-const imgBasePath = "https://image.tmdb.org/t/p/w500";
+const imgBasePath = 'https://image.tmdb.org/t/p/w500';
 
 const AppTitleBar = styled.div`
   padding: 32px;
@@ -69,7 +69,7 @@ class App extends React.Component<{}, AppState> {
     window.addEventListener('resize', this.updateTileWidth);
     this.fetchMovies();
   }
-    
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateTileWidth);
   }
@@ -79,16 +79,16 @@ class App extends React.Component<{}, AppState> {
       .then((movieData: Movie[]) => {
         this.setState({
           loading: false,
-          movieData
-        })
+          movieData,
+        });
       })
       .catch((err: any) => {
         this.setState({
           loading: false,
-          loadingError: true
+          loadingError: true,
         });
       });
-  }
+  };
 
   updateTileWidth = () => {
     const meanWidth = 250;
@@ -96,7 +96,7 @@ class App extends React.Component<{}, AppState> {
     const numTiles = Math.floor(total / meanWidth) + 1;
     const tileWidth = total / numTiles;
     this.setState({tileWidth});
-  }
+  };
 
   openMovieInfo = (id: number, title: string, desc: string) => {
     this.setState({
@@ -105,25 +105,27 @@ class App extends React.Component<{}, AppState> {
       selectedDesc: desc,
       showMovieInfo: true,
     });
-  }
+  };
 
   closeMovieInfo = () => {
     this.setState({showMovieInfo: false});
-  }
+  };
 
   openAdminPage = () => {
     this.setState({showAdminPage: true});
-  }
+  };
 
   closeAdminPage = () => {
     this.setState({showAdminPage: false});
-  }
+  };
 
   render() {
     return [
       <AppTitleBar key="1">
         <AppTitle>YAMRS</AppTitle>
-        <TextButton color="white" onClick={this.openAdminPage}>Administration</TextButton>
+        <TextButton color="white" onClick={this.openAdminPage}>
+          Administration
+        </TextButton>
       </AppTitleBar>,
       <GridContainer key="2">
         {this.state.movieData.map((d: Movie) => (
@@ -145,9 +147,11 @@ class App extends React.Component<{}, AppState> {
         show={this.state.showMovieInfo}
         close={this.closeMovieInfo}
       />,
-      <AdminSection key="4" show={this.state.showAdminPage} close={this.closeAdminPage}>
-        HELLO
-      </AdminSection>
+      <AdminSection
+        key="4"
+        show={this.state.showAdminPage}
+        close={this.closeAdminPage}
+      />,
     ];
   }
 }

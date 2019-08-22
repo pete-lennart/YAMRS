@@ -1,5 +1,5 @@
-import * as React from "react";
-import {asButton, asIcon, SVGPath, RuneProps} from "./helper";
+import * as React from 'react';
+import {asButton, asIcon, SVGPath, RuneProps} from './helper';
 
 const StarRune = (props: RuneProps) => {
   let cpid = Math.random().toString(10);
@@ -18,7 +18,7 @@ const StarRune = (props: RuneProps) => {
       />
     </g>
   );
-}
+};
 
 export const StarIcon = asIcon(StarRune);
 

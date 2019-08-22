@@ -27,8 +27,8 @@ const Background = styled.div<BackgroundProps>`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.7);
-  opacity: ${({show}) => show ? "1" : "0"};
-  visibility: ${({show}) => show ? "visible" : "hidden"};
+  opacity: ${({show}) => (show ? '1' : '0')};
+  visibility: ${({show}) => (show ? 'visible' : 'hidden')};
   transition: all 0.5s;
   z-index: 100;
 `;
@@ -82,7 +82,6 @@ const ApproveOverlay = styled.div`
 `;
 
 interface AdminSectionProps extends VisibilityProps {
-  children: React.ReactNode;
   close: () => void;
 }
 
@@ -96,7 +95,10 @@ interface AdminSectionState {
   getUnapprovedReviewsStatus: fetchStatus;
 }
 
-export class AdminSection extends React.Component<AdminSectionProps, AdminSectionState> {
+export class AdminSection extends React.Component<
+  AdminSectionProps,
+  AdminSectionState
+> {
   private dialogBackground: React.RefObject<HTMLDivElement>;
   constructor(props: AdminSectionProps) {
     super(props);
@@ -107,32 +109,44 @@ export class AdminSection extends React.Component<AdminSectionProps, AdminSectio
       wrongUsername: false,
       wrongPassword: false,
       unapprovedReviews: [],
-      getUnapprovedReviewsStatus: "pending"
-    }
+      getUnapprovedReviewsStatus: 'pending',
+    };
     this.dialogBackground = React.createRef();
   }
 
   componentDidUpdate() {
     getUnapprovedReviews()
       .then((reviews: Review[]) => {
-        this.setState({unapprovedReviews: reviews, getUnapprovedReviewsStatus: "success"});
+        this.setState({
+          unapprovedReviews: reviews,
+          getUnapprovedReviewsStatus: 'success',
+        });
       })
       .catch((err: any) => {
-        this.setState({getUnapprovedReviewsStatus: "error"});
+        this.setState({getUnapprovedReviewsStatus: 'error'});
       });
   }
 
   handleUsernameChange = (e: React.ChangeEvent) => {
     this.setState({username: (e.target as HTMLInputElement).value});
-  }
+  };
 
   handlePasswordChange = (e: React.ChangeEvent) => {
     this.setState({password: (e.target as HTMLInputElement).value});
-  }
+  };
 
   login = () => {
-    if (this.state.password === config.adminPassword && this.state.username === config.adminName) {
-      this.setState({username: '', password: '', loggedIn: true, wrongPassword: false, wrongUsername: false});
+    if (
+      this.state.password === config.adminPassword &&
+      this.state.username === config.adminName
+    ) {
+      this.setState({
+        username: '',
+        password: '',
+        loggedIn: true,
+        wrongPassword: false,
+        wrongUsername: false,
+      });
     } else {
       if (this.state.password !== config.adminPassword) {
         this.setState({wrongPassword: true});
@@ -141,13 +155,13 @@ export class AdminSection extends React.Component<AdminSectionProps, AdminSectio
         this.setState({wrongUsername: true});
       }
     }
-  }
+  };
 
   fixedOnClick = (e: React.MouseEvent) => {
     if (e.target === this.dialogBackground.current) {
       this.props.close();
     }
-  }
+  };
 
   approveReview = (id: string) => {
     approveReview(id)
@@ -160,33 +174,51 @@ export class AdminSection extends React.Component<AdminSectionProps, AdminSectio
       .catch((err: any) => {
         console.log(err);
       });
-  }
+  };
 
   render() {
     return [
-      <Background key="1" show={this.props.show} onClick={this.fixedOnClick} ref={this.dialogBackground}>
-        {!this.state.loggedIn
-          ? (
-            <DialogContainer>
-              <TextInput label="Username" value={this.state.username} onChange={this.handleUsernameChange} />
-              <PasswordInput label="Password" value={this.state.password} onChange={this.handlePasswordChange} />
-              <TextButton onClick={this.login}>Login</TextButton>
-            </DialogContainer>
-          )
-          : (
-            <UnapprovedReviewList>
-              {this.state.unapprovedReviews.map((review: Review) => (
-                <AdminReviewBox key={review.id}>
-                  <ReviewBox numstars={review.numstars} text={review.text} username={review.username} />
-                  <ApproveOverlay>
-                    <CheckmarkButton color="white" size={56} onClick={() => this.approveReview(review.id)} />
-                  </ApproveOverlay>
-                </AdminReviewBox>
-              ))}
-            </UnapprovedReviewList>
-          )
-        }
-      </Background>
+      <Background
+        key="1"
+        show={this.props.show}
+        onClick={this.fixedOnClick}
+        ref={this.dialogBackground}
+      >
+        {!this.state.loggedIn ? (
+          <DialogContainer>
+            <TextInput
+              label="Username"
+              value={this.state.username}
+              onChange={this.handleUsernameChange}
+            />
+            <PasswordInput
+              label="Password"
+              value={this.state.password}
+              onChange={this.handlePasswordChange}
+            />
+            <TextButton onClick={this.login}>Login</TextButton>
+          </DialogContainer>
+        ) : (
+          <UnapprovedReviewList>
+            {this.state.unapprovedReviews.map((review: Review) => (
+              <AdminReviewBox key={review.id}>
+                <ReviewBox
+                  numstars={review.numstars}
+                  text={review.text}
+                  username={review.username}
+                />
+                <ApproveOverlay>
+                  <CheckmarkButton
+                    color="white"
+                    size={56}
+                    onClick={() => this.approveReview(review.id)}
+                  />
+                </ApproveOverlay>
+              </AdminReviewBox>
+            ))}
+          </UnapprovedReviewList>
+        )}
+      </Background>,
     ];
   }
 }

@@ -1,19 +1,19 @@
-import {Movie, MovieRequest} from "../types";
+import {Movie, MovieRequest} from '../types';
 import * as config from '../config.json';
 
 const getMovieRequestPath = (page: number) => {
   return `https://api.themoviedb.org/3/movie/now_playing?api_key=${config.apiKey}&page=${page}`;
-}
+};
 
 export default function(): Promise<Movie[]> {
-  return fetch(getMovieRequestPath(1))
-
+  return (
+    fetch(getMovieRequestPath(1))
       // Extract json from response object.
       .then((res: Response) => {
         if (res.ok) {
           return res.json();
         }
-        throw new Error("Response not ok");
+        throw new Error('Response not ok');
       })
 
       // The json includes a field 'total_pages' with the total amount of pages
@@ -24,9 +24,8 @@ export default function(): Promise<Movie[]> {
         // If the field is not given, the response must be erroneous. Else
         // continue with all queries.
         if (!numPages) {
-          return Promise.reject("Error in requesting movie data");
+          return Promise.reject('Error in requesting movie data');
         } else {
-
           // Create an array with consecutive numbers from 1 to the total amount
           // of pages.
           const arr: number[] = Array.from(Array(numPages).keys());
@@ -34,11 +33,12 @@ export default function(): Promise<Movie[]> {
 
           // Out of the given array, create an array with queries on all pages.
           // Every number in the array is the page to query.
-          const fetchArr = arr.map((n: number) => fetch(getMovieRequestPath(n)));
+          const fetchArr = arr.map((n: number) =>
+            fetch(getMovieRequestPath(n)),
+          );
 
           // Return a promise combining all the queries.
           return Promise.all(fetchArr);
-
         }
       })
 
@@ -53,5 +53,5 @@ export default function(): Promise<Movie[]> {
       .then((movReqs: MovieRequest[]) => {
         return movReqs.map((mr: MovieRequest) => mr.results).flat();
       })
-
+  );
 }

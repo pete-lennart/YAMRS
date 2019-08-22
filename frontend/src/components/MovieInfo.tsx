@@ -21,8 +21,8 @@ const Container = styled.div<ContainerProps>`
   width: 100%;
   height: 100%;
   padding: 50px;
-  opacity: ${(props: ContainerProps) => props.show ? '1' : '0'};
-  visibility: ${(props: ContainerProps) => props.show ? 'visible' : 'hidden'};
+  opacity: ${(props: ContainerProps) => (props.show ? '1' : '0')};
+  visibility: ${(props: ContainerProps) => (props.show ? 'visible' : 'hidden')};
   transition: all 0.5s;
   background-color: white;
   box-sizing: border-box;
@@ -104,9 +104,9 @@ export class MovieInfo extends React.Component<MovieInfoProps, MovieInfoState> {
     super(props);
     this.state = {
       reviews: [],
-      getReviewsStatus: "pending",
+      getReviewsStatus: 'pending',
       showNewReviewDialog: false,
-      createReviewStatus: "idle",
+      createReviewStatus: 'idle',
     };
   }
 
@@ -114,21 +114,21 @@ export class MovieInfo extends React.Component<MovieInfoProps, MovieInfoState> {
     if (this.props.id !== prevProps.id) {
       getReviewsOfMovie(this.props.id)
         .then((reviews: Review[]) => {
-          this.setState({reviews, getReviewsStatus: "success"});
+          this.setState({reviews, getReviewsStatus: 'success'});
         })
         .catch((err: any) => {
-          this.setState({getReviewsStatus: "error"});
+          this.setState({getReviewsStatus: 'error'});
         });
     }
   }
 
   openNewReviewDialog = () => {
     this.setState({showNewReviewDialog: true});
-  }
+  };
 
   closeNewReviewDialog = () => {
     this.setState({showNewReviewDialog: false});
-  }
+  };
 
   render() {
     return (
@@ -136,7 +136,11 @@ export class MovieInfo extends React.Component<MovieInfoProps, MovieInfoState> {
         <TitleBar>
           <Title>{this.props.title}</Title>
           <ButtonContainer>
-            <PlusButton size={32} onClick={this.openNewReviewDialog} margin="0 32px 0 0" />
+            <PlusButton
+              size={32}
+              onClick={this.openNewReviewDialog}
+              margin="0 32px 0 0"
+            />
             <XButton size={32} onClick={this.props.close} />
           </ButtonContainer>
         </TitleBar>
@@ -145,16 +149,25 @@ export class MovieInfo extends React.Component<MovieInfoProps, MovieInfoState> {
             <Description>{this.props.desc}</Description>
           </SummaryPane>
           <ReviewPane>
-            {this.state.getReviewsStatus === "pending"
-              ? <LoadingContainer>Loading...</LoadingContainer>
-              : this.state.getReviewsStatus === "error"
-                ? <LoadingContainer>Error! Could not load reviews.</LoadingContainer>
-                : this.state.reviews.length === 0
-                  ? <LoadingContainer>No reviews have been written for this movie. Be the first one!</LoadingContainer>
-                  : this.state.reviews.map((review: Review) => (
-                    <ReviewBox numstars={review.numstars} text={review.text} username={review.username} />
-                  ))
-            }
+            {this.state.getReviewsStatus === 'pending' ? (
+              <LoadingContainer>Loading...</LoadingContainer>
+            ) : this.state.getReviewsStatus === 'error' ? (
+              <LoadingContainer>
+                Error! Could not load reviews.
+              </LoadingContainer>
+            ) : this.state.reviews.length === 0 ? (
+              <LoadingContainer>
+                No reviews have been written for this movie. Be the first one!
+              </LoadingContainer>
+            ) : (
+              this.state.reviews.map((review: Review) => (
+                <ReviewBox
+                  numstars={review.numstars}
+                  text={review.text}
+                  username={review.username}
+                />
+              ))
+            )}
             <NewReviewBox
               id={this.props.id}
               show={this.state.showNewReviewDialog}
@@ -163,6 +176,6 @@ export class MovieInfo extends React.Component<MovieInfoProps, MovieInfoState> {
           </ReviewPane>
         </MainArea>
       </Container>
-    )
+    );
   }
 }

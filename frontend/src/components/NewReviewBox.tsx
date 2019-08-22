@@ -18,8 +18,8 @@ const Container = styled.div<ContainerProps>`
   left: 0;
   height: 100%;
   width: 100%;
-  opacity: ${({show}) => show ? "1" : "0"};
-  visibility: ${({show}) => show ? "visible" : "hidden"};
+  opacity: ${({show}) => (show ? '1' : '0')};
+  visibility: ${({show}) => (show ? 'visible' : 'hidden')};
   transition: all 0.5s;
   background-color: white;
 `;
@@ -60,7 +60,10 @@ interface NewReviewBoxState {
   hasError: boolean;
 }
 
-export class NewReviewBox extends React.Component<NewReviewBoxProps, NewReviewBoxState> {
+export class NewReviewBox extends React.Component<
+  NewReviewBoxProps,
+  NewReviewBoxState
+> {
   constructor(props: NewReviewBoxProps) {
     super(props);
     this.state = {
@@ -72,40 +75,49 @@ export class NewReviewBox extends React.Component<NewReviewBoxProps, NewReviewBo
   }
 
   saveNewReview = () => {
-    createReview(this.props.id, this.state.text, this.state.numstars, this.state.username)
+    createReview(
+      this.props.id,
+      this.state.text,
+      this.state.numstars,
+      this.state.username,
+    )
       .then((success: boolean) => {
         if (success) {
-          console.log("New review created successfully");
+          console.log('New review created successfully');
           this.props.close();
           this.setState({text: '', numstars: 0, username: ''});
         }
-        return Promise.reject("Error while creating review");
+        return Promise.reject('Error while creating review');
       })
       .catch((err: any) => {
-        console.log("Error while creating review");
+        console.log('Error while creating review');
         console.log(err);
         this.setState({hasError: true});
-      })
-  }
+      });
+  };
 
   handleTextChange = (e: React.ChangeEvent) => {
     this.setState({text: (e.target as HTMLInputElement).value});
-  }
+  };
 
   handleUsernameChange = (e: React.ChangeEvent) => {
     this.setState({username: (e.target as HTMLInputElement).value});
-  }
+  };
 
   selectStars = (numstars: number) => {
     this.setState({numstars});
-  }
+  };
 
   render() {
     return (
       <Container show={this.props.show}>
         <Form>
           <FormSection>
-            <TextInput label="Name" value={this.state.username} onChange={this.handleUsernameChange} />
+            <TextInput
+              label="Name"
+              value={this.state.username}
+              onChange={this.handleUsernameChange}
+            />
           </FormSection>
           <FormSection>
             <StarContainer>
@@ -115,14 +127,38 @@ export class NewReviewBox extends React.Component<NewReviewBoxProps, NewReviewBo
                 filled={this.state.numstars > 0}
                 onClick={() => this.selectStars(1)}
               />
-              <StarButton size={40} color="black" filled={this.state.numstars > 1} onClick={() => this.selectStars(2)} />
-              <StarButton size={40} color="black" filled={this.state.numstars > 2} onClick={() => this.selectStars(3)} />
-              <StarButton size={40} color="black" filled={this.state.numstars > 3} onClick={() => this.selectStars(4)} />
-              <StarButton size={40} color="black" filled={this.state.numstars > 4} onClick={() => this.selectStars(5)} />
+              <StarButton
+                size={40}
+                color="black"
+                filled={this.state.numstars > 1}
+                onClick={() => this.selectStars(2)}
+              />
+              <StarButton
+                size={40}
+                color="black"
+                filled={this.state.numstars > 2}
+                onClick={() => this.selectStars(3)}
+              />
+              <StarButton
+                size={40}
+                color="black"
+                filled={this.state.numstars > 3}
+                onClick={() => this.selectStars(4)}
+              />
+              <StarButton
+                size={40}
+                color="black"
+                filled={this.state.numstars > 4}
+                onClick={() => this.selectStars(5)}
+              />
             </StarContainer>
           </FormSection>
           <FormSection>
-            <TextInput label="Text" value={this.state.text} onChange={this.handleTextChange} />
+            <TextInput
+              label="Text"
+              value={this.state.text}
+              onChange={this.handleTextChange}
+            />
           </FormSection>
         </Form>
         <BottomBar>

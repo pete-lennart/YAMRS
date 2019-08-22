@@ -55,4 +55,4 @@ export const ReviewBox = (props: ReviewProps) => (
     </ReviewTitleBar>
     <ReviewText>{props.text}</ReviewText>
   </ReviewContainer>
-)
+);

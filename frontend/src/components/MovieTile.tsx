@@ -53,11 +53,9 @@ interface MovieTileProps {
 
 export const MovieTile = (props: MovieTileProps) => (
   <TileContainer width={props.width}>
-    <TileImage
-      src={props.src}
-    />
+    <TileImage src={props.src} />
     <TileOverlay onClick={props.onClick}>
       <TileOverlayHeader>{props.title}</TileOverlayHeader>
     </TileOverlay>
   </TileContainer>
-)
+);

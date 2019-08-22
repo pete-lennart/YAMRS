@@ -6,7 +6,7 @@ interface RawInputProps {
 }
 
 const RawInput = styled.input<RawInputProps>`
-  border: 1px solid ${({error}) => error ? "red" : "#cccccc"};
+  border: 1px solid ${({error}) => (error ? 'red' : '#cccccc')};
   border-radius: 4px;
   padding: 8px;
 `;
@@ -33,8 +33,8 @@ const genericInput = (type: string) => (props: InputProps) => (
   </InputLabel>
 );
 
-export const TextInput = genericInput("text");
+export const TextInput = genericInput('text');
 
-export const PasswordInput = genericInput("password");
+export const PasswordInput = genericInput('password');
 
-export const NumberInput = genericInput("number");
+export const NumberInput = genericInput('number');

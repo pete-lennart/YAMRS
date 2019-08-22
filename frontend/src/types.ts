@@ -36,4 +36,4 @@ export interface Review {
   username: string;
 }
 
-export type fetchStatus = "idle" | "pending" | "error" | "success";
+export type fetchStatus = 'idle' | 'pending' | 'error' | 'success';
