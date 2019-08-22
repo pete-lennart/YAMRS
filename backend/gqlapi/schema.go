@@ -14,7 +14,7 @@ var reviewType = graphql.NewObject(graphql.ObjectConfig{
 			Type: graphql.String,
 		},
 		"movieid": &graphql.Field{
-			Type: graphql.String,
+			Type: graphql.Int,
 		},
 		"text": &graphql.Field{
 			Type: graphql.String,
@@ -40,7 +40,7 @@ func createRootMutation(ds database.Datastore) *graphql.Object {
 				Description: "Create new review",
 				Args: graphql.FieldConfigArgument{
 					"movieid": &graphql.ArgumentConfig{
-						Type: graphql.NewNonNull(graphql.String),
+						Type: graphql.NewNonNull(graphql.Int),
 					},
 					"text": &graphql.ArgumentConfig{
 						Type: graphql.NewNonNull(graphql.String),
@@ -54,7 +54,7 @@ func createRootMutation(ds database.Datastore) *graphql.Object {
 				},
 				Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 					id := xid.New()
-					movieid, _ := params.Args["movieid"].(string)
+					movieid, _ := params.Args["movieid"].(int)
 					text, _ := params.Args["text"].(string)
 					numstars, _ := params.Args["numstars"].(int)
 					username, _ := params.Args["username"].(string)
@@ -106,11 +106,11 @@ func createRootQuery(ds database.Datastore) *graphql.Object {
 				Description: "Reviews of a single movie",
 				Args: graphql.FieldConfigArgument{
 					"movieid": &graphql.ArgumentConfig{
-						Type: graphql.String,
+						Type: graphql.Int,
 					},
 				},
 				Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-					movieid, ok := params.Args["movieid"].(string)
+					movieid, ok := params.Args["movieid"].(int)
 					if !ok {
 						return nil, errors.New(`Wrong type for field "movieid"`)
 					}

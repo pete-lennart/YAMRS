@@ -9,9 +9,9 @@ import (
 
 type Datastore interface {
 	AllReviews() ([]*review, error)
-	ReviewsOfMovie(id string) ([]*review, error)
+	ReviewsOfMovie(id int) ([]*review, error)
 	UnapprovedReviews() ([]*review, error)
-	CreateReview(id string, movieid string, text string, numstars int, username string) error
+	CreateReview(id string, movieid int, text string, numstars int, username string) error
 	ApproveReview(id string) error
 }
 
@@ -21,7 +21,7 @@ type DBConnection struct {
 
 type review struct {
 	ID       string `json:"id"`
-	MovieID  string `json:"movieid"`
+	MovieID  int    `json:"movieid"`
 	Text     string `json:"text"`
 	NumStars int    `json:"numstars"`
 	Username string `json:"username"`
@@ -49,9 +49,9 @@ func (rdbc *DBConnection) AllReviews() ([]*review, error) {
 	return foundReviews, nil
 }
 
-func (rdbc *DBConnection) ReviewsOfMovie(id string) ([]*review, error) {
+func (rdbc *DBConnection) ReviewsOfMovie(id int) ([]*review, error) {
 	foundReviews := []*review{}
-	cur, err := rdbc.Find(context.Background(), bson.D{bson.E{Key: "movieid", Value: id}})
+	cur, err := rdbc.Find(context.Background(), bson.M{"movieid": id, "approved": true})
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (rdbc *DBConnection) ReviewsOfMovie(id string) ([]*review, error) {
 
 func (rdbc *DBConnection) UnapprovedReviews() ([]*review, error) {
 	foundReviews := []*review{}
-	cur, err := rdbc.Find(context.Background(), bson.D{bson.E{Key: "approved", Value: false}})
+	cur, err := rdbc.Find(context.Background(), bson.M{"approved": false})
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +91,7 @@ func (rdbc *DBConnection) UnapprovedReviews() ([]*review, error) {
 	return foundReviews, nil
 }
 
-func (rdbc *DBConnection) CreateReview(id string, movieid string, text string, numstars int, username string) error {
+func (rdbc *DBConnection) CreateReview(id string, movieid int, text string, numstars int, username string) error {
 	newReview := &review{
 		ID:       id,
 		MovieID:  movieid,

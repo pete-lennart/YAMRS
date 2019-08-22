@@ -19,7 +19,7 @@ export default function(): Promise<Movie[]> {
       // The json includes a field 'total_pages' with the total amount of pages
       // to query on.
       .then((json: MovieRequest) => {
-        const numPages = json.total_pages;
+        const numPages = Math.min(json.total_pages, 5);
 
         // If the field is not given, the response must be erroneous. Else
         // continue with all queries.

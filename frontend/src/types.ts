@@ -27,3 +27,13 @@ export interface MovieRequest {
   dates: DateRange;
   total_pages: number;
 }
+
+export interface Review {
+  id: string;
+  movieid: number;
+  text: string;
+  numstars: number;
+  username: string;
+}
+
+export type fetchStatus = "idle" | "pending" | "error" | "success";

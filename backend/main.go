@@ -23,21 +23,25 @@ func main() {
 	var schema = gqlapi.CreateSchema(rdbc)
 
 	http.HandleFunc("/graphql", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 		var data map[string]interface{}
 		buf := new(bytes.Buffer)
 		buf.ReadFrom(r.Body)
 		err := json.Unmarshal(buf.Bytes(), &data)
 		if err != nil {
+			log.Println(err);
 			http.Error(w, err.Error(), 400)
 			return
 		}
 		query, ok := data["query"].(string)
 		if !ok {
+			log.Println(err);
 			http.Error(w, "Invalid query type", 400)
 			return
 		}
 		result, err := gqlapi.ExecuteQuery(query, schema)
 		if err != nil {
+			log.Println(err);
 			http.Error(w, "Error while processing query", 400)
 			return
 		}

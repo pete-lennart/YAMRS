@@ -55,9 +55,8 @@ export const MovieTile = (props: MovieTileProps) => (
   <TileContainer width={props.width}>
     <TileImage
       src={props.src}
-      onClick={props.onClick}
-      />
-    <TileOverlay>
+    />
+    <TileOverlay onClick={props.onClick}>
       <TileOverlayHeader>{props.title}</TileOverlayHeader>
     </TileOverlay>
   </TileContainer>
