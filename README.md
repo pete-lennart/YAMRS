@@ -90,6 +90,7 @@ Within this project a fully functional fullstack website with backend and a grap
 }
 ```
 `gqlPath` is the path of the graphql api. The rest has to be unchanged. The username and password are used to access the "protected" administration page on the website.
+
 2. Create `backend/config/config.go` with
 ```
 package config
@@ -113,7 +114,9 @@ var EmailConfig = struct{
 }
 ```
 The first user and password is used for database access. The second config block is used for sending emails.
+
 3. Run `go run backend/main.go`.
+
 4. Go into directory `frontend/` and `yarn start`.
 
 ## Technical and architectural choices
